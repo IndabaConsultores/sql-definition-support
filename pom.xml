@@ -2,10 +2,10 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.indaba</groupId>
-    <artifactId>sqld-support</artifactId>
+    <artifactId>sql-definiton-support</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>sqld-support</name>
+    <name>sql-definiton-support</name>
     <description>A library for managing SQL queries out of code</description>
 
     <url>https://github.com/IndabaConsultores/sqld-support</url>

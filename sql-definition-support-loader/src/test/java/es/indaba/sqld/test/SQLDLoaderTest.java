@@ -9,7 +9,7 @@ import es.indaba.sqld.QueryDefinition;
 import es.indaba.sqld.QueryDefinitionsHolder;
 import es.indaba.sqld.loader.SQLDClassPathLoader;
 
-public class SqldLoaderTest {
+public class SQLDLoaderTest {
 
     @Test
     public void testSqldLoad() {
@@ -21,9 +21,9 @@ public class SqldLoaderTest {
         assertEquals("QUERY2_CONTENT", query2.getQueryAsString());
 
         QueryDefinition querySubs = new QueryDefinition("QUERY_SUBSTITUTION");
-        assertEquals("QUERY_SUBSTITUTION {0},{1}", querySubs.getQueryAsString());
+        assertEquals("QUERY_SUBSTITUTION {0},{1},{2}", querySubs.getQueryAsString());
         assertEquals(querySubs.getQueryAsString(), querySubs.toString());
-        assertEquals("QUERY_SUBSTITUTION a,''b''", querySubs.getQueryAsString("a", "'b'"));
+        assertEquals("QUERY_SUBSTITUTION a,''b'',3", querySubs.getQueryAsString("a", "'b'",3));
 
 
         // Check not loaded
@@ -76,6 +76,23 @@ public class SqldLoaderTest {
         assertEquals("TEMPLATE1_CONTENT", template1.getQueryAsString());
 
         QueryDefinitionsHolder.clear();
+    }
+    
+    @Test
+    public void testLazyLoad() {
+        QueryDefinition template1 = new QueryDefinition("TEMPLATE1");
+        boolean thrown = false;
+        try {
+            template1.getQueryAsString();
+        } catch (IllegalArgumentException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        SQLDClassPathLoader.loadBlockFiles("es.indaba.sqld.test.sqld", "template");
+        assertEquals("TEMPLATE1_CONTENT", template1.getQueryAsString());
+
+        QueryDefinitionsHolder.clear();
+        
     }
 
 

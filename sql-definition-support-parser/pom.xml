@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>es.indaba</groupId>
-        <artifactId>sqld-support</artifactId>
+        <artifactId>sql-definiton-support</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>sql-definition-support-parser</artifactId>
-    <name>sqld-support-parser</name>
+    <name>sql-definiton-support</name>
     <description>Parser for sql definition files</description>
 
     <licenses>
