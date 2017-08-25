@@ -78,5 +78,21 @@ public class TestSQLDParser {
         String content = blocks.getProperty("EMPTY_BLOCK");
         org.junit.Assert.assertEquals("", content);
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testDuplicatedKey() throws Exception {
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("test-duplicated-key.sqld");
+
+        TextBlockReader sqlReader = new TextBlockReader(stream, "test-duplicated-key.sqld");
+        sqlReader.read();
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalBlock() throws Exception {
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("test-illegal-block.sqld");
+
+        TextBlockReader sqlReader = new TextBlockReader(stream, "test-illegal-block.sqld");
+        sqlReader.read();
+    }
 }
 

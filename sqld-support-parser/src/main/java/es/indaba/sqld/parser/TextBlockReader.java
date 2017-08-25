@@ -89,16 +89,11 @@ public final class TextBlockReader {
         fBlockBody.append(NEW_LINE);
     }
 
-    /**
-     * Allow a duplicate key, but log as SEVERE.
-     */
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void addToResult(final String aKey, final String aValue, final Map aResult) {
         if (aResult.containsKey(aKey)) {
-            LOGGER.error("DUPLICATE Value found for this Block Name or constant name '{}' in {}", aKey,
-                    fConfigFileName);
-            throw new IllegalArgumentException(
-                    "DUPLICATE Value found for this Block Name or constant name '" + aKey + "'");
+            LOGGER.error("DUPLICATE Value found for this Block Name '{}' in {}", aKey, fConfigFileName);
+            throw new IllegalArgumentException("DUPLICATE Value found for this Block Name '" + aKey + "'");
         }
         aResult.put(aKey, aValue);
     }

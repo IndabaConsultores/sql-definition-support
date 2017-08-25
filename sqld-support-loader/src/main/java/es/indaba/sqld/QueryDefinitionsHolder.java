@@ -36,6 +36,9 @@ public final class QueryDefinitionsHolder {
     }
 
     public static String getQueryAsString(final String queryName) {
+        if (!QUERIES.containsKey(queryName)) {
+            throw new IllegalArgumentException("The query '" + queryName + "' is not present");
+        }
         return QUERIES.getProperty(queryName);
     }
 

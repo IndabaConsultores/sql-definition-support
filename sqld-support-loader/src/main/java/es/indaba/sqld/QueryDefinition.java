@@ -10,32 +10,48 @@
 package es.indaba.sqld;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class QueryDefinition {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryDefinition.class);
 
     private String query;
     private String id;
 
     public QueryDefinition(String id) {
         this.id = id;
-        // Dependiendo del orden de carga y ejecucion de las clases en el classLoader,
-        // el query puede ser null
-        this.query = QueryDefinitionsHolder.getQueryAsString(id);
+        try {
+            this.query = QueryDefinitionsHolder.getQueryAsString(id);
+        } catch (IllegalArgumentException e) {
+            // Log and wait for a laizy loading
+            LOGGER.warn(
+                    "Query {} has been request but is not loaded yet. Usually this an error as the query is not defined",
+                    id);
+        }
     }
 
     public String getQueryAsString() {
         if (query != null) {
             return query;
         }
-        // No se ha cargado bien al inicializar los contextos, recargamos por si acaso.
         query = QueryDefinitionsHolder.getQueryAsString(id);
         return query;
     }
 
     public String getQueryAsString(Object... parameters) {
-        return MessageFormat.format(StringUtils.replace(getQueryAsString(), "'", "''"), parameters);
+        final List<Object> parameterList = Arrays.asList(parameters);
+        final List<Object> escapedParameterList =
+                parameterList.stream().map(x -> x instanceof String ? StringUtils.replace((String) x, "'", "''") : x)
+                        .collect(Collectors.toList());
+
+        return MessageFormat.format(getQueryAsString(), escapedParameterList.toArray());
     }
 
     @Override
