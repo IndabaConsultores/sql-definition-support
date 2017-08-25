@@ -94,5 +94,14 @@ public class TestSQLDParser {
         TextBlockReader sqlReader = new TextBlockReader(stream, "test-illegal-block.sqld");
         sqlReader.read();
     }
+    
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyKey() throws Exception {
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("test-empty-key.sqld");
+
+        TextBlockReader sqlReader = new TextBlockReader(stream, "test-empty-key.sqld");
+        sqlReader.read();
+    }
 }
 

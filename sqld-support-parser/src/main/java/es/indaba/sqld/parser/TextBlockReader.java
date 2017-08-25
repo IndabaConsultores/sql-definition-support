@@ -99,9 +99,7 @@ public final class TextBlockReader {
     }
 
     private void endBlock(final Properties aResult) {
-        if (fIsReadingBlockBody) {
-            addToResult(fKey, fBlockBody.toString().trim(), aResult);
-        }
+        addToResult(fKey, fBlockBody.toString().trim(), aResult);
         fIsReadingBlockBody = false;
     }
 
@@ -202,13 +200,12 @@ public final class TextBlockReader {
      * <P> Differs from {@link Pattern#matches} and {@link String#matches}, since the regex argument is a compiled
      * {@link Pattern}, not a <tt>String</tt>.
      */
-    public static boolean matches(final Pattern aPattern, final String aText) {
+    private static boolean matches(final Pattern aPattern, final String aText) {
+        assert (aText != null);
         /*
          * Implementation Note: Patterns are thread-safe, while Matchers are not. Thus, a Pattern may be compiled by a
          * class once upon startup, then reused safely in a multi-threaded environment.
-         */
-        if (aText == null)
-            return false;
+         */        
         final Matcher matcher = aPattern.matcher(aText);
         return matcher.matches();
     }
