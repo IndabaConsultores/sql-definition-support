@@ -16,9 +16,43 @@ Include Maven dependency on your pom.xml
 ```xml
 <dependency>
 	<groupId>es.indaba</groupId>
-	<artifactId>sql-definition-support</artifactId>
+	<artifactId>sql-definition-support-loader</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 </dependency>
+```
+Place the queries in one or many text files with .sqld extension in the applications classpath. 
+i.e. com/test/test-queries.sql
+
+```
+MY_QUERY_1 {
+ SELECT * 
+ FRON ANY_TABLE 
+ WHERE A=? OR B=?
+}
+-- Second query
+MY_QUERY_2 {
+ -- This is my favorite query
+ SELECT * 
+ FRON FAVORITE_TABLE 
+ WHERE C=?
+}
+...
+```
+Load the sqld definitions on your application startup, providing the classpath prefix for retricting the search
+
+```java
+...
+SQLDClassPathLoader.loadSqlds("com.test");
+...
+```
+Where you need to acces to a query instantiate a QueryDefinition class with the quierie's key
+
+```java
+...
+QueryDefinition query = new QueryDefinition("MY_QUERY_2");
+-- Get the query as a String
+String sqlQuery = query.getQueryAsString();
+...
 ```
 
 Check tests for detailed use.
