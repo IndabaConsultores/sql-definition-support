@@ -6,31 +6,28 @@
         <artifactId>sqld-support</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>sqld-support-parser</artifactId>
-    <name>sqld-support-parser</name>
-    <description>Parser for sql definition files</description>
-
-    <licenses>
-        <license>
-            <name>3-Clause BSD License</name>
-            <url>https://opensource.org/licenses/BSD-3-Clause</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
+    <artifactId>sql-definition-support-loader</artifactId>
     <dependencies>
+        <dependency>
+            <groupId>es.indaba</groupId>
+            <artifactId>sql-definition-support-parser</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+        </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -41,5 +38,4 @@
             <artifactId>log4j-core</artifactId>
         </dependency>
     </dependencies>
-
 </project>

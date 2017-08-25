@@ -183,7 +183,7 @@
         </plugins>
     </build>
     <modules>
-        <module>sqld-support-parser</module>
-        <module>sqld-support-loader</module>
+        <module>sql-definition-support-parser</module>
+        <module>sql-definition-support-loader</module>
     </modules>
 </project>
