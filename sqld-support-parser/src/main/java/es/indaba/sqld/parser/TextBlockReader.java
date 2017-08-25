@@ -26,11 +26,17 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public final class TextBlockReader {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TextBlockReader.class);
 
     /*
      * Scoped identifier.
@@ -51,7 +57,6 @@ public final class TextBlockReader {
     private static final String START_BLOCK = "{";
     private static final Pattern KEY_NAME_PATTERN = Pattern.compile(SIMPLE_SCOPED_IDENTIFIER);
 
-    private static final Logger LOGGER = Util.getLogger(TextBlockReader.class);
 
     // PRIVATE //
     private final LineNumberReader fReader;
@@ -73,13 +78,13 @@ public final class TextBlockReader {
      * @param aInput has an underlying <tt>TextBlock</tt> file as source
      * @param aConfigFileName the underlying source file name
      */
-    public TextBlockReader(InputStream aInput, String aConfigFileName) {
+    public TextBlockReader(final InputStream aInput, final String aConfigFileName) {
         fReader = new LineNumberReader(new InputStreamReader(aInput));
         fConfigFileName = aConfigFileName;
     }
 
 
-    private void addToBlockBody(String aLine) {
+    private void addToBlockBody(final String aLine) {
         fBlockBody.append(aLine);
         fBlockBody.append(NEW_LINE);
     }
@@ -88,49 +93,54 @@ public final class TextBlockReader {
      * Allow a duplicate key, but log as SEVERE.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void addToResult(String aKey, String aValue, Map aResult) {
+    private void addToResult(final String aKey, final String aValue, final Map aResult) {
         if (aResult.containsKey(aKey)) {
-            LOGGER.severe("DUPLICATE Value found for this Block Name or constant name " + Util.quote(aKey)
-                    + ". This almost always indicates an error.");
+            LOGGER.error("DUPLICATE Value found for this Block Name or constant name '{}' in {}", aKey,
+                    fConfigFileName);
+            throw new IllegalArgumentException(
+                    "DUPLICATE Value found for this Block Name or constant name '" + aKey + "'");
         }
         aResult.put(aKey, aValue);
     }
 
-    private void endBlock(Properties aResult) {
+    private void endBlock(final Properties aResult) {
         if (fIsReadingBlockBody) {
             addToResult(fKey, fBlockBody.toString().trim(), aResult);
         }
         fIsReadingBlockBody = false;
     }
 
-    private String getBlockName(String aLine) {
-        int indexOfBrace = aLine.indexOf(START_BLOCK);
+    private String getBlockName(final String aLine) {
+        final int indexOfBrace = aLine.indexOf(START_BLOCK);
         if (indexOfBrace == -1) {
+            LOGGER.error(
+                    "Error parsing file: {} Expecting to find line defining a block, containing a trailing '{}'.Found this: '{}'",
+                    reportLineNumber(), START_BLOCK, aLine);
             throw new IllegalArgumentException(
-                    reportLineNumber() + "Expecting to find line defining a block, containing a trailing "
-                            + Util.quote(START_BLOCK) + ". Found this line instead : " + Util.quote(aLine));
+                    reportLineNumber() + "Expecting to find line defining a block, containing a trailing '"
+                            + START_BLOCK + "'. Found this line instead : '" + aLine + "'");
         }
-        String candidateKey = aLine.substring(0, indexOfBrace).trim();
+        final String candidateKey = aLine.substring(0, indexOfBrace).trim();
         return verifiedKeyName(candidateKey);
     }
 
 
 
-    private boolean isComment(String aLine) {
+    private boolean isComment(final String aLine) {
         return aLine.trim().startsWith(COMMENT);
     }
 
-    private boolean isEndOfBlock(String aLine) {
+    private boolean isEndOfBlock(final String aLine) {
         return END_BLOCK.equals(aLine.trim());
     }
 
-    private boolean isIgnorable(String aLine) {
+    private boolean isIgnorable(final String aLine) {
         boolean result;
         if (isInBlock()) {
             // no empty lines within blocks allowed
             result = isComment(aLine);
         } else {
-            result = !Util.textHasContent(aLine) || isComment(aLine);
+            result = StringUtils.isBlank(aLine) || isComment(aLine);
         }
         return result;
     }
@@ -151,7 +161,7 @@ public final class TextBlockReader {
      * WHERE LoginName=?</tt>.
      */
     public Properties read() throws IOException {
-        LOGGER.fine("Reading text block file : " + Util.quote(fConfigFileName));
+        LOGGER.debug("Reading text block file : '{}'", fConfigFileName);
         final Properties result = new Properties();
         String line = null;
         while ((line = fReader.readLine()) != null) {
@@ -176,19 +186,35 @@ public final class TextBlockReader {
     }
 
 
-    private void startBlock(String aLine) {
+    private void startBlock(final String aLine) {
         fKey = getBlockName(aLine);
         fBlockBody = new StringBuilder();
         fIsReadingBlockBody = true;
     }
 
-    private String verifiedKeyName(String aCandidateKey) {
-        if (Util.matches(KEY_NAME_PATTERN, aCandidateKey)) {
+    private String verifiedKeyName(final String aCandidateKey) {
+        if (matches(KEY_NAME_PATTERN, aCandidateKey)) {
             return aCandidateKey;
         }
-        String message =
-                reportLineNumber() + "The name " + Util.quote(aCandidateKey) + " is not in the expected syntax. "
-                        + "It does not match the regular expression " + KEY_NAME_PATTERN.pattern();
+        final String message = reportLineNumber() + "The name '" + aCandidateKey + "' is not in the expected syntax. "
+                + "It does not match the regular expression " + KEY_NAME_PATTERN.pattern();
         throw new IllegalArgumentException(message);
+    }
+
+    /*
+     * Return true only if <tt>aText</tt> is non-null, and matches <tt>aPattern</tt>.
+     * 
+     * <P> Differs from {@link Pattern#matches} and {@link String#matches}, since the regex argument is a compiled
+     * {@link Pattern}, not a <tt>String</tt>.
+     */
+    public static boolean matches(final Pattern aPattern, final String aText) {
+        /*
+         * Implementation Note: Patterns are thread-safe, while Matchers are not. Thus, a Pattern may be compiled by a
+         * class once upon startup, then reused safely in a multi-threaded environment.
+         */
+        if (aText == null)
+            return false;
+        final Matcher matcher = aPattern.matcher(aText);
+        return matcher.matches();
     }
 }

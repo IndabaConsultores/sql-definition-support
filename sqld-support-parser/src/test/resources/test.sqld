@@ -1,6 +1,7 @@
 -- Start with a comment in the file
 -- second line of comment
 QUERY1 {
+--Comment in the block
  QUERY1_CONTENT
 }
 -- comments 
