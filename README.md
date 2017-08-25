@@ -2,7 +2,7 @@
 
 [![Travis-CI](https://travis-ci.org/IndabaConsultores/sql-definition-support.svg?branch=master)](https://travis-ci.org/IndabaConsultores/sql-definition-support) [![Sonarcloud](https://sonarcloud.io/api/badges/gate?key=es.indaba:sql-definiton-support)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definiton-support) [![SonarCloud Technical Debt](https://sonarcloud.io/api/badges/measure?key=es.indaba:sql-definiton-support&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definiton-support) [![SonarCloud Coverage](https://sonarcloud.io/api/badges/measure?key=es.indaba:sql-definiton-support&metric=coverage)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definiton-support)
 
-SQL Definition Support (LGPL)
+(UNRELEASED) SQL Definition Support (LGPL)
 =============
 Support library for externalizing SQL queries from Java code (LGPL)
 
