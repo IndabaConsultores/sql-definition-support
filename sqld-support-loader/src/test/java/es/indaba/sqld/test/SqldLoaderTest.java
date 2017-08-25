@@ -1,4 +1,4 @@
-package sql;
+package es.indaba.sqld.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -13,7 +13,7 @@ public class SqldLoaderTest {
 
     @Test
     public void testSqldLoad() {
-        SQLDClassPathLoader.loadSqlds("com.lks.test.sql");
+        SQLDClassPathLoader.loadSqlds("es.indaba.sqld.test.sqld");
         // Check loader
         QueryDefinition query1 = new QueryDefinition("QUERY1");
         assertEquals("QUERY1_CONTENT", query1.getQueryAsString());
@@ -37,7 +37,7 @@ public class SqldLoaderTest {
         assertTrue(thrown);
 
         // Loads upper prefix
-        SQLDClassPathLoader.loadSqlds("com.lks");
+        SQLDClassPathLoader.loadSqlds("es.indaba");
         query3 = new QueryDefinition("QUERY3");
         assertEquals("QUERY3_CONTENT", query3.getQueryAsString());
         // template not loaded
@@ -63,7 +63,7 @@ public class SqldLoaderTest {
 
     @Test
     public void testExtension() {
-        SQLDClassPathLoader.loadBlockFiles("com.lks.test.sql", "template");
+        SQLDClassPathLoader.loadBlockFiles("es.indaba.sqld.test.sqld", "template");
         QueryDefinition query3 = new QueryDefinition("QUERY3");
         boolean thrown = false;
         try {
