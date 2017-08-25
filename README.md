@@ -45,7 +45,7 @@ Load the sqld definitions on your application startup, providing the classpath p
 SQLDClassPathLoader.loadSqlds("com.test");
 ...
 ```
-Where you need to acces to a query instantiate a QueryDefinition class with the quierie's key
+Where you need to acces to a query instantiate a QueryDefinition class with the query's key
 
 ```java
 ...
