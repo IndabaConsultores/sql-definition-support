@@ -5,7 +5,7 @@
     <artifactId>sqld-support</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>sqld-suppor</name>
+    <name>sqld-support</name>
     <description>A library for managing SQL queries out of code</description>
 
     <url>https://github.com/IndabaConsultores/sqld-support</url>
