@@ -90,10 +90,11 @@ public final class QueryDefinitionsHolder {
      * @return - A String with the query
      */
     public static String getQueryAsString(final String queryName) {
-        if (!QUERIES.containsKey(queryName)) {
+        assert queryName!=null;
+        if (!QUERIES.containsKey(queryName.toLowerCase())) {
             throw new IllegalArgumentException("The query '" + queryName + "' is not present");
         }
-        return QUERIES.getProperty(queryName);
+        return QUERIES.getProperty(queryName.toLowerCase());
     }
 
     
