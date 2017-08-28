@@ -28,17 +28,21 @@ public class QueryDefinition {
     private static final Logger LOGGER = LoggerFactory.getLogger(QueryDefinition.class);
 
     private String query;
-    private String id;
+    private String key;
 
-    public QueryDefinition(String id) {
-        this.id = id;
+    /**
+     * Constructs a proxy for the provided query key
+     * @param key
+     */
+    public QueryDefinition(String key) {
+        this.key = key;
         try {
-            this.query = QueryDefinitionsHolder.getQueryAsString(id);
+            this.query = QueryDefinitionsHolder.getQueryAsString(key);
         } catch (IllegalArgumentException e) {
             // Log and wait for a laizy loading
             LOGGER.warn(
                     "Query {} has been requested but is not loaded yet. Usually this an error as the query is not defined",
-                    id);
+                    key);
         }
     }
 
@@ -51,7 +55,7 @@ public class QueryDefinition {
         if (query != null) {
             return query;
         }
-        query = QueryDefinitionsHolder.getQueryAsString(id);
+        query = QueryDefinitionsHolder.getQueryAsString(key);
         return query;
     }
 
