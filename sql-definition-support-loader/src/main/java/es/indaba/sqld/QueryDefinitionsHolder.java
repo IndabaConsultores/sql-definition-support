@@ -12,26 +12,51 @@ package es.indaba.sqld;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import es.indaba.sqld.parser.TextBlockReader;
 
 public final class QueryDefinitionsHolder {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryDefinitionsHolder.class);
+
     private static final Properties QUERIES = new Properties();
+    private static final Set<String> FILES = new HashSet<>();
+    private static final Map<String, String> QUERIES_FILE = new HashMap<>();
 
     public static void loadTextBlockFile(final InputStream aInput, final String aSqlFileName) throws IOException {
+        if (FILES.contains(aSqlFileName)) {
+            LOGGER.debug("The file '{}' is already loaded.", aSqlFileName);
+            return;
+        }
         final TextBlockReader sqlReader = new TextBlockReader(aInput, aSqlFileName);
         final Properties qFile = sqlReader.read();
-        addProperties(qFile, QUERIES);
+        addProperties(qFile, QUERIES, aSqlFileName);
+        FILES.add(aSqlFileName);
     }
 
-    private static void addProperties(final Properties aProperties, final Properties aResult) {
+    private static void addProperties(final Properties aProperties, final Properties aResult,
+            final String aSqlFileName) {
         final Enumeration<?> keys = aProperties.propertyNames();
         while (keys.hasMoreElements()) {
             final String key = (String) keys.nextElement();
             final String value = aProperties.getProperty(key);
+            if (aResult.containsKey(key)) {
+                String duplicateKeyFile = QUERIES_FILE.get(key);
+                LOGGER.error("The query '{}' is duplicated. The key is present in files {} and {} ", key, aSqlFileName,
+                        duplicateKeyFile);
+                throw new IllegalArgumentException(
+                        "The query '" + key + "' is duplicated in files " + aSqlFileName + " and " + duplicateKeyFile);
+            }
             aResult.setProperty(key, value);
+            QUERIES_FILE.put(key, aSqlFileName);
         }
     }
 
@@ -44,6 +69,9 @@ public final class QueryDefinitionsHolder {
 
     public static void clear() {
         QUERIES.clear();
+        FILES.clear();
+        QUERIES_FILE.clear();
+
     }
 
     private QueryDefinitionsHolder() {

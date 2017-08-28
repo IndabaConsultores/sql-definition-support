@@ -7,7 +7,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>sql-definition-support-parser</artifactId>
-    <name>sql-definiton-support</name>
+    <name>sql-definiton-support-parser</name>
     <description>Parser for sql definition files</description>
 
     <licenses>

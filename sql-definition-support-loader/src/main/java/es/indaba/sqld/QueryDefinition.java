@@ -18,6 +18,11 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+/**
+ * This is a Query Definition Proxy. It retrieves the SQL query from the queries store.
+ *
+ */
 public class QueryDefinition {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueryDefinition.class);
@@ -37,6 +42,11 @@ public class QueryDefinition {
         }
     }
 
+    
+    /**
+     * Returns the query as a String
+     * @return the query proxied by this object
+     */
     public String getQueryAsString() {
         if (query != null) {
             return query;
@@ -45,6 +55,11 @@ public class QueryDefinition {
         return query;
     }
 
+    /**
+     * Returns the query as an interpolated String with the provided parameters
+     * @param parameters parameters to be interpolated into the query
+     * @return the query interpolated with the parameters 
+     */
     public String getQueryAsString(Object... parameters) {
         final List<Object> parameterList = Arrays.asList(parameters);
         final List<Object> escapedParameterList =
