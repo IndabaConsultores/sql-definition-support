@@ -4,7 +4,7 @@
     <groupId>es.indaba</groupId>
     <artifactId>sql-definition-support</artifactId>
     <version>1.0.0</version>
-    <name>sql-definiton-support</name>
+    <name>sql-definition-support</name>
     <description>A library for managing externalized SQL queries</description>
 
     <url>https://github.com/IndabaConsultores/sqld-support</url>
