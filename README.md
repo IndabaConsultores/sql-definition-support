@@ -2,7 +2,7 @@
 
 [![Travis-CI](https://travis-ci.org/IndabaConsultores/sql-definition-support.svg?branch=master)](https://travis-ci.org/IndabaConsultores/sql-definition-support) [![Sonarcloud](https://sonarcloud.io/api/badges/gate?key=es.indaba:sql-definiton-support)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definiton-support) [![SonarCloud Technical Debt](https://sonarcloud.io/api/badges/measure?key=es.indaba:sql-definiton-support&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definiton-support) [![SonarCloud Coverage](https://sonarcloud.io/api/badges/measure?key=es.indaba:sql-definiton-support&metric=coverage)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definiton-support)
 
-(UNRELEASED) SQL Definition Support (LGPL)
+SQL Definition Support (LGPL)
 =============
 Support library for externalizing SQL queries from Java code (LGPL)
 
@@ -16,8 +16,8 @@ Include Maven dependency on your pom.xml
 ```xml
 <dependency>
 	<groupId>es.indaba</groupId>
-	<artifactId>sql-definition-support-loader</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>sql-definition-support</artifactId>
+	<version>1.0.0</version>
 </dependency>
 ```
 Place the queries in one or many text files with .sqld extension in the applications classpath. 
