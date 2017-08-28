@@ -9,11 +9,6 @@
     <artifactId>sql-definition-support-loader</artifactId>
     <dependencies>
         <dependency>
-            <groupId>es.indaba</groupId>
-            <artifactId>sql-definition-support-parser</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
         </dependency>

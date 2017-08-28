@@ -31,7 +31,13 @@ public final class QueryDefinitionsHolder {
     private static final Set<String> FILES = new HashSet<>();
     private static final Map<String, String> QUERIES_FILE = new HashMap<>();
 
-    public static void loadTextBlockFile(final InputStream aInput, final String aSqlFileName) throws IOException {
+    /**
+     * Parses a sqld file extracting queries from file.
+     * @param aInput - The stream for the file to be processed
+     * @param aSqlFileName -The name of the resource to be processed
+     * @throws IOException - An error is produced during the file read operation
+     */
+    public static synchronized void loadTextBlockFile(final InputStream aInput, final String aSqlFileName) throws IOException {
         if (FILES.contains(aSqlFileName)) {
             LOGGER.debug("The file '{}' is already loaded.", aSqlFileName);
             return;
@@ -60,6 +66,11 @@ public final class QueryDefinitionsHolder {
         }
     }
 
+    /**
+     * Get the query string from the query store
+     * @param queryName - The query key
+     * @return - A String with the query
+     */
     public static String getQueryAsString(final String queryName) {
         if (!QUERIES.containsKey(queryName)) {
             throw new IllegalArgumentException("The query '" + queryName + "' is not present");
@@ -67,7 +78,11 @@ public final class QueryDefinitionsHolder {
         return QUERIES.getProperty(queryName);
     }
 
-    public static void clear() {
+    
+    /**
+     * Clears the query store
+     */
+    public static synchronized void clear() {
         QUERIES.clear();
         FILES.clear();
         QUERIES_FILE.clear();

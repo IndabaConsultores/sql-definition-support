@@ -1,0 +1,37 @@
+-- Start with a comment in the file
+-- second line of comment
+QUERY1 {
+--Comment in the block
+ QUERY1_CONTENT
+}
+-- comments 
+QUERY2 {
+ QUERY2_CONTENT
+}
+
+CONTAINS_0_NUMBER{
+ CONTAINS_0_NUMBER_CONTENT
+}
+
+ENDS_WITH_NUMBER_0{
+ ENDS_WITH_NUMBER_0_CONTENT
+}
+
+OBTENERPRIMAPORT{
+SELECT    MIN(AP.FEC_APORT) primAport
+  FROM
+ ( SELECT COD_FONDO_FONDO ,COD_DNI_FONDO,MIN(FEC_APORT) FEC_APORT
+            FROM HAJ1_APORTACIONES_N
+             WHERE COD_FONDO_FONDO = 1
+               AND COD_DNI_FONDO   = :codDni
+            GROUP BY COD_FONDO_FONDO,COD_DNI_FONDO                        
+ UNION ALL
+  SELECT COD_FONDO_FONDO,COD_DNI_FONDO,MIN(FECHA_ALTA_OF) FEC_APORT
+            FROM HAJ1_TRASPASOS_OF_N
+             WHERE COD_FONDO_FONDO = 1
+               AND COD_DNI_FONDO   = :codDni
+            GROUP BY COD_FONDO_FONDO,COD_DNI_FONDO
+  ) AP
+  GROUP BY AP.COD_DNI_FONDO
+}
+--final comment

@@ -30,7 +30,7 @@ public final class SQLDClassPathLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SQLDClassPathLoader.class);
 
-    /*
+    /**
      * Loads text block files with sqld extension. Each block is loaded into the QueryDefinitionsManager.
      * 
      * @param prefix - is the package prefix where the sqld files are located.
@@ -39,7 +39,7 @@ public final class SQLDClassPathLoader {
         loadBlockFiles(prefix, "sqld");
     }
 
-    /*
+    /**
      * Loads text block files with the specified extension. Each block is loaded into the QueryDefinitionsManager.
      * 
      * @param prefix - is the package prefix where the sqld files are located.

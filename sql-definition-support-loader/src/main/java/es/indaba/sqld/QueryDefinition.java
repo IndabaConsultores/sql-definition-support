@@ -37,7 +37,7 @@ public class QueryDefinition {
         } catch (IllegalArgumentException e) {
             // Log and wait for a laizy loading
             LOGGER.warn(
-                    "Query {} has been request but is not loaded yet. Usually this an error as the query is not defined",
+                    "Query {} has been requested but is not loaded yet. Usually this an error as the query is not defined",
                     id);
         }
     }

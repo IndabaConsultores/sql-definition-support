@@ -22,7 +22,7 @@ public class SQLDLoaderTest {
 
     @Test
     public void testSqldLoad() {
-        SQLDClassPathLoader.loadSqlds("es.indaba.sqld.test.sqld");
+        SQLDClassPathLoader.loadSqlds("es.indaba.sqld.test.loader.test.package1");
         // Check loader
         QueryDefinition query1 = new QueryDefinition("QUERY1");
         assertEquals("QUERY1_CONTENT", query1.getQueryAsString());
@@ -46,7 +46,7 @@ public class SQLDLoaderTest {
         assertTrue(thrown);
 
         // Loads upper prefix
-        SQLDClassPathLoader.loadSqlds("es.indaba.sqld.test");
+        SQLDClassPathLoader.loadSqlds("es.indaba.sqld.test.loader.test");
         query3 = new QueryDefinition("QUERY3");
         assertEquals("QUERY3_CONTENT", query3.getQueryAsString());
         // template not loaded
@@ -72,7 +72,7 @@ public class SQLDLoaderTest {
 
     @Test
     public void testExtension() {
-        SQLDClassPathLoader.loadBlockFiles("es.indaba.sqld.test.sqld", "template");
+        SQLDClassPathLoader.loadBlockFiles("es.indaba.sqld.test.loader.test", "template");
         QueryDefinition query3 = new QueryDefinition("QUERY3");
         boolean thrown = false;
         try {
@@ -97,7 +97,7 @@ public class SQLDLoaderTest {
             thrown = true;
         }
         assertTrue(thrown);
-        SQLDClassPathLoader.loadBlockFiles("es.indaba.sqld.test.sqld", "template");
+        SQLDClassPathLoader.loadBlockFiles("es.indaba.sqld.test.loader.test", "template");
         assertEquals("TEMPLATE1_CONTENT", template1.getQueryAsString());
 
         QueryDefinitionsHolder.clear();
@@ -106,7 +106,7 @@ public class SQLDLoaderTest {
     
     @Test(expected=IllegalArgumentException.class)
     public void testDuplicatedKey() {
-        SQLDClassPathLoader.loadSqlds("es.indaba.sqld");
+        SQLDClassPathLoader.loadSqlds("es.indaba.sqld.test.loader");
     }
 
 }
