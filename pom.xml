@@ -4,7 +4,6 @@
     <groupId>es.indaba</groupId>
     <artifactId>sql-definiton-support</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
     <name>sql-definiton-support</name>
     <description>A library for managing SQL queries out of code</description>
 
@@ -57,7 +56,6 @@
 
     </properties>
 
-    <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -97,7 +95,6 @@
                 <scope>test</scope>
             </dependency>
         </dependencies>
-    </dependencyManagement>
     <build>
         <plugins>
             <plugin>
@@ -182,8 +179,4 @@
             </plugin>
         </plugins>
     </build>
-    <modules>
-        <module>sql-definition-support-parser</module>
-        <module>sql-definition-support-loader</module>
-    </modules>
 </project>
