@@ -6,9 +6,14 @@ import java.io.LineNumberReader;
 import java.util.Map;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 
 public class YamlFileReader {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(YamlFileReader.class);
 
     private final LineNumberReader fReader;
 
@@ -26,11 +31,28 @@ public class YamlFileReader {
     @SuppressWarnings("unchecked")
     public Properties read() {
         final Properties properties = new Properties();
-        final Yaml yaml = new Yaml();
-        final Map<String, String> result = (Map<String, String>) yaml.load(fReader);
-        for (final String key : result.keySet()) {
-            properties.setProperty(key, result.get(key));
+        final LoaderOptions options = new LoaderOptions();
+        options.setAllowDuplicateKeys(false);
+        final Yaml yaml = new Yaml(options);
+        try {
+            final Map<String, String> result = (Map<String, String>) yaml.load(fReader);
+            for (final String key : result.keySet()) {
+                if (properties.containsKey(key.toLowerCase())) {
+                    LOGGER.error("DUPLICATE Value found - 'Duplicate key {}' in {}", key, fConfigFileName);
+                    throw new IllegalArgumentException("DUPLICATE Value found for this key '" + key + "'");
+                }
+                properties.setProperty(key.toLowerCase(), result.get(key));
+            }
+        } catch (IllegalStateException e) {
+            String message = e.getMessage();
+            if (message.startsWith("duplicate")) {
+                LOGGER.error("DUPLICATE Value found - '{}' in {}", message, fConfigFileName);
+                throw new IllegalArgumentException(e.getMessage(), e);
+            } else {
+                throw e;
+            }
         }
+
         return properties;
     }
 

@@ -1,5 +1,7 @@
-query1: |
+Query1: |
  QUERY1_CONTENT
+query1: |
+ QUERY1_CONTENT2
 query2: |
  QUERY2_CONTENT
 query5: |
@@ -17,4 +19,4 @@ query6: |
  #ss
  #ss
  
- que rry:
+ 1que rry: |

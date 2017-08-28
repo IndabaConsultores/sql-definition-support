@@ -91,11 +91,11 @@ public final class TextBlockReader {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void addToResult(final String aKey, final String aValue, final Map aResult) {
-        if (aResult.containsKey(aKey)) {
+        if (aResult.containsKey(aKey.toLowerCase())) {
             LOGGER.error("DUPLICATE Value found for this Block Name '{}' in {}", aKey, fConfigFileName);
             throw new IllegalArgumentException("DUPLICATE Value found for this Block Name '" + aKey + "'");
         }
-        aResult.put(aKey, aValue);
+        aResult.put(aKey.toLowerCase(), aValue);
     }
 
     private void endBlock(final Properties aResult) {

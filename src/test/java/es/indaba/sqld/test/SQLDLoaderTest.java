@@ -34,7 +34,9 @@ public class SQLDLoaderTest {
         assertEquals(querySubs.getQueryAsString(), querySubs.toString());
         assertEquals("QUERY_SUBSTITUTION a,''b'',3", querySubs.getQueryAsString("a", "'b'",3));
 
-
+        QueryDefinition queryYaml = new QueryDefinition("QUERY_YAML");
+        assertEquals("QUERY_YAML_CONTENT\n", queryYaml.getQueryAsString());
+        
         // Check not loaded
         QueryDefinition query3 = new QueryDefinition("QUERY3");
         boolean thrown = false;

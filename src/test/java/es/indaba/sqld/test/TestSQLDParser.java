@@ -21,22 +21,22 @@ public class TestSQLDParser {
         TextBlockReader sqlReader = new TextBlockReader(stream, "es/indaba/sqld/test/parser/test.sqld");
         Properties blocks = sqlReader.read();
 
-        String query1 = blocks.getProperty("QUERY1");
+        String query1 = blocks.getProperty("query1");
         assertEquals("QUERY1_CONTENT", query1);
 
-        String query2 = blocks.getProperty("QUERY2");
+        String query2 = blocks.getProperty("query2");
         assertEquals("QUERY2_CONTENT", query2);
 
-        String query3 = blocks.getProperty("CONTAINS_0_NUMBER");
+        String query3 = blocks.getProperty("contains_0_number");
         assertEquals("CONTAINS_0_NUMBER_CONTENT", query3);
 
-        String query4 = blocks.getProperty("ENDS_WITH_NUMBER_0");
+        String query4 = blocks.getProperty("ends_with_number_0");
         assertEquals("ENDS_WITH_NUMBER_0_CONTENT", query4);
     }
 
 
     @Test
-    public void testCaseSensitiveKeys() throws Exception {
+    public void testCaseInsensitiveKeys() throws Exception {
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/parser/test.sqld");
 
         TextBlockReader sqlReader = new TextBlockReader(stream, "es/indaba/sqld/test/parser/test.sqld");
@@ -44,10 +44,10 @@ public class TestSQLDParser {
         assertNotNull(blocks);
 
         String query1 = blocks.getProperty("query1");
-        assertNull(query1);
-
-        query1 = blocks.getProperty("QUERY1");
         assertEquals("QUERY1_CONTENT", query1);
+        
+        query1 = blocks.getProperty("QUERY1");
+        assertNull(query1);
     }
 
 
@@ -75,7 +75,7 @@ public class TestSQLDParser {
         TextBlockReader sqlReader = new TextBlockReader(stream, "es/indaba/sqld/test/parser/test-empty-block.sqld");
         Properties blocks = sqlReader.read();
         assertEquals(1, blocks.size());
-        String content = blocks.getProperty("EMPTY_BLOCK");
+        String content = blocks.getProperty("empty_block");
         org.junit.Assert.assertEquals("", content);
     }
     
