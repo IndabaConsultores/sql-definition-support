@@ -38,14 +38,14 @@ MY_QUERY_2 {
 }
 ...
 ```
-Load the sqld definitions on your application startup, providing the classpath prefix for retricting the search
+Load the sqld definitions on your application startup, providing the classpath prefix for restricting the search
 
 ```java
 ...
 SQLDClassPathLoader.loadSqlds("com.test");
 ...
 ```
-Where you need to acces to a query instantiate a QueryDefinition class with the query's key
+Where you need to access to a query instantiate a QueryDefinition class with the query's key
 
 ```java
 ...
@@ -59,9 +59,16 @@ Check tests for detailed use.
 
 ## References
 * Keep SQL out of code - http://www.javapractices.com/topic/TopicAction.do?Id=105
-* How to store and manage SQL staments - https://dzone.com/articles/how-to-store-and-manage-sql-statements-more-effect
+* How to store and manage SQL statements - https://dzone.com/articles/how-to-store-and-manage-sql-statements-more-effect
 
 ## Contribute
 Pull requests are welcomed!!
 
 This is an open debate if you find this support unnecessary or you think there is a better way to manage the SQL queries in code. Please open an issue and we will be please to discuss about it. 
+
+## Licenses
+This work is distributed under LGPL v3.
+
+The text file parser (es.indaba.sqld.parser.TextBlockReader) is inspired in the work done by the [WEB4J](http://www.web4j.com/) project that was released under the 3-Clause BSD License. See /LICENSES/BSD-LICENSE.txt. 
+ 
+
