@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.indaba.sqld.parser.TextBlockReader;
+import es.indaba.sqld.parser.YamlFileReader;
 
 public final class QueryDefinitionsHolder {
 
@@ -43,6 +44,23 @@ public final class QueryDefinitionsHolder {
             return;
         }
         final TextBlockReader sqlReader = new TextBlockReader(aInput, aSqlFileName);
+        final Properties qFile = sqlReader.read();
+        addProperties(qFile, QUERIES, aSqlFileName);
+        FILES.add(aSqlFileName);
+    }
+    
+    /**
+     * Parses a yaml sqld file extracting queries from file.
+     * @param aInput - The stream for the yaml file to be processed
+     * @param aSqlFileName -The name of the resource to be processed
+     * @throws IOException - An error is produced during the file read operation
+     */
+    public static synchronized void loadYamlFile(final InputStream aInput, final String aSqlFileName) throws IOException {
+        if (FILES.contains(aSqlFileName)) {
+            LOGGER.debug("The file '{}' is already loaded.", aSqlFileName);
+            return;
+        }
+        final YamlFileReader sqlReader = new YamlFileReader(aInput, aSqlFileName);
         final Properties qFile = sqlReader.read();
         addProperties(qFile, QUERIES, aSqlFileName);
         FILES.add(aSqlFileName);

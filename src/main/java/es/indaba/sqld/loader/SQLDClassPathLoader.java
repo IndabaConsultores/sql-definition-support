@@ -37,6 +37,7 @@ public final class SQLDClassPathLoader {
      */
     public static void loadSqlds(final String prefix) {
         loadBlockFiles(prefix, "sqld");
+        loadYamlFiles(prefix,"ysqld");
     }
 
     /**
@@ -57,6 +58,21 @@ public final class SQLDClassPathLoader {
                 QueryDefinitionsHolder.loadTextBlockFile(stream, resource);
             } catch (final IOException e) {
                 LOGGER.error("Error Loading SQL file {} ", resource, e);
+            }
+        }
+    }
+    
+    public static void loadYamlFiles(final String prefix, final String extension) {
+        final Predicate<String> filter = new FilterBuilder().include(prefix + ".*\\." + extension);
+        final Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter)
+                .setScanners(new ResourcesScanner()).setUrls(ClasspathHelper.forClassLoader()));
+        final Set<String> resources = reflections.getResources(Pattern.compile(".*\\." + extension));
+        for (final String resource : resources) {
+            try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
+                LOGGER.debug("Loading SQL Yaml file {} ", resource);
+                QueryDefinitionsHolder.loadYamlFile(stream, resource);
+            } catch (final IOException e) {
+                LOGGER.error("Error Loading SQL Yaml file {} ", resource, e);
             }
         }
     }
