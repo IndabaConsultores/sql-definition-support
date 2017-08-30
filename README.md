@@ -13,13 +13,15 @@ Feel free to use this library as you wish, make sure to quote the LGPL in all us
 ## Using this project
 
 Include Maven dependency on your pom.xml
+
 ```xml
 <dependency>
 	<groupId>es.indaba</groupId>
 	<artifactId>sql-definition-support</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 </dependency>
 ```
+
 Place the queries in one or many text files with .sqld extension in the applications classpath. 
 i.e. com/test/test-queries.sql
 
@@ -38,11 +40,28 @@ MY_QUERY_2 {
 }
 ...
 ```
+
+YAML syntax is also supported for files with .ysqld extension
+
+com/test/test.ysqld
+
+```yaml
+query1: |
+ QUERY1_CONTENT
+query2: |
+ QUERY2_CONTENT
+query5: |
+ Select * 
+ from table
+ where a=1
+ and b=?
+```
+
 Load the sqld definitions on your application startup, providing the classpath prefix for restricting the search
 
 ```java
 ...
-SQLDClassPathLoader.loadSqlds("com.test");
+QueryDefinitionsStaticHolder.loadQueryDefinitions("com.test");
 ...
 ```
 Where you need to access to a query instantiate a QueryDefinition class with the query's key
@@ -52,6 +71,8 @@ Where you need to access to a query instantiate a QueryDefinition class with the
 QueryDefinition query = new QueryDefinition("MY_QUERY_2");
 -- Get the query as a String
 String sqlQuery = query.getQueryAsString();
+...
+sqlQuery = QueryDefinitionsStaticHolder.getQueryAsString("query1");
 ...
 ```
 
