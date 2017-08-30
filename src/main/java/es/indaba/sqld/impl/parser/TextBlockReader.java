@@ -18,7 +18,7 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package es.indaba.sqld.parser;
+package es.indaba.sqld.impl.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,11 +91,11 @@ public final class TextBlockReader {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void addToResult(final String aKey, final String aValue, final Map aResult) {
-        if (aResult.containsKey(aKey)) {
+        if (aResult.containsKey(aKey.toLowerCase())) {
             LOGGER.error("DUPLICATE Value found for this Block Name '{}' in {}", aKey, fConfigFileName);
             throw new IllegalArgumentException("DUPLICATE Value found for this Block Name '" + aKey + "'");
         }
-        aResult.put(aKey, aValue);
+        aResult.put(aKey.toLowerCase(), aValue);
     }
 
     private void endBlock(final Properties aResult) {
@@ -206,7 +206,7 @@ public final class TextBlockReader {
         /*
          * Implementation Note: Patterns are thread-safe, while Matchers are not. Thus, a Pattern may be compiled by a
          * class once upon startup, then reused safely in a multi-threaded environment.
-         */        
+         */
         final Matcher matcher = aPattern.matcher(aText);
         return matcher.matches();
     }
