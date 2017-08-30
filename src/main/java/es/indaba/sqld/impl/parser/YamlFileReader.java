@@ -1,4 +1,4 @@
-package es.indaba.sqld.parser;
+package es.indaba.sqld.impl.parser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

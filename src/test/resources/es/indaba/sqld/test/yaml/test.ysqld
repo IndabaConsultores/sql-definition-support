@@ -1,7 +1,5 @@
-Query1: |
- QUERY1_CONTENT
 query1: |
- QUERY1_CONTENT2
+ QUERY1_CONTENT
 query2: |
  QUERY2_CONTENT
 query5: |

@@ -7,7 +7,7 @@
  * not, see <http://www.gnu.org/licenses/>
  * 
  *******************************************************************************/
-package es.indaba.sqld;
+package es.indaba.sqld.impl;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -18,26 +18,30 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.indaba.sqld.QueryDefinitionsStaticHolder;
+import es.indaba.sqld.api.QueryDefinition;
+
 
 /**
  * This is a Query Definition Proxy. It retrieves the SQL query from the queries store.
  *
  */
-public class QueryDefinition {
+public class QueryDefinitionStaticImpl implements QueryDefinition {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QueryDefinition.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryDefinitionStaticImpl.class);
 
     private String query;
     private String key;
 
     /**
      * Constructs a proxy for the provided query key
+     * 
      * @param key
      */
-    public QueryDefinition(String key) {
+    public QueryDefinitionStaticImpl(String key) {
         this.key = key;
         try {
-            this.query = QueryDefinitionsHolder.getQueryAsString(key);
+            this.query = QueryDefinitionsStaticHolder.getQueryAsString(key);
         } catch (IllegalArgumentException e) {
             // Log and wait for a laizy loading
             LOGGER.warn(
@@ -46,23 +50,25 @@ public class QueryDefinition {
         }
     }
 
-    
+
     /**
      * Returns the query as a String
+     * 
      * @return the query proxied by this object
      */
     public String getQueryAsString() {
         if (query != null) {
             return query;
         }
-        query = QueryDefinitionsHolder.getQueryAsString(key);
+        query = QueryDefinitionsStaticHolder.getQueryAsString(key);
         return query;
     }
 
     /**
      * Returns the query as an interpolated String with the provided parameters
+     * 
      * @param parameters parameters to be interpolated into the query
-     * @return the query interpolated with the parameters 
+     * @return the query interpolated with the parameters
      */
     public String getQueryAsString(Object... parameters) {
         final List<Object> parameterList = Arrays.asList(parameters);

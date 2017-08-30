@@ -18,7 +18,7 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package es.indaba.sqld.parser;
+package es.indaba.sqld.impl.parser;
 
 import java.io.IOException;
 import java.io.InputStream;

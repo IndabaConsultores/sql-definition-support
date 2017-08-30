@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import es.indaba.sqld.parser.YamlFileReader;
+import es.indaba.sqld.impl.parser.YamlFileReader;
 
 
 public class TestYamlParser {

@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import es.indaba.sqld.parser.TextBlockReader;
+import es.indaba.sqld.impl.parser.TextBlockReader;
 
 
 public class TestSQLDParser {
