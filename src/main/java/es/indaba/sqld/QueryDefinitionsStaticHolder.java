@@ -22,7 +22,7 @@ public final class QueryDefinitionsStaticHolder {
     private static final QueryDefinitionRepository QUERY_REPOSITORY = new QueryDefinitionRepository();
 
     public static synchronized void loadQueryDefinitions(String prefix) {
-        QueryDefinitionClassPathLoader.loadSqlds(prefix, QUERY_REPOSITORY);
+        QueryDefinitionClassPathLoader.loadQueryDefinitionFiles(prefix, QUERY_REPOSITORY);
     }
 
     /**

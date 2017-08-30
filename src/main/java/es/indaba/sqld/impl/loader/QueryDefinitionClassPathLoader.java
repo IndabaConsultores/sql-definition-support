@@ -34,66 +34,44 @@ public final class QueryDefinitionClassPathLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueryDefinitionClassPathLoader.class);
 
-  
-//    public static void loadSqlds(final String prefix) {
-//        loadBlockFiles(prefix, "sqld");
-//        loadYamlFiles(prefix, "ysqld");
-//    }
+    private static final String SQLD_TEXT_EXTENSION = "sqld";
+    private static final String SQLD_YAML_EXTENSION = "ysqld";
 
     /**
-     * Loads text block files with sqld extension. Each block is loaded into the QueryDefinitionsManager.
+     * Loads query definition files with sqld and ysqld extension. Each block is loaded into the provided
+     * QueryDefinitionRepository.
      * 
-     * @param prefix - is the package prefix where the sqld files are located.
+     * @param prefix - is the package prefix where the query definitions files are located.
+     * 
+     * @param repository - is the repository where the definitions are loaded.
      */
-    public static void loadSqlds(final String prefix, QueryDefinitionRepository repository) {
-        loadBlockFiles(prefix, "sqld", repository);
-        loadYamlFiles(prefix, "ysqld", repository);
-    }
-    
+    public static void loadQueryDefinitionFiles(final String prefix, QueryDefinitionRepository repository) {
+        final Predicate<String> filter = new FilterBuilder().include(prefix + ".*\\." + SQLD_TEXT_EXTENSION)
+                .include(prefix + ".*\\." + SQLD_YAML_EXTENSION);
 
-    /**
-     * Loads text block files with the specified extension. Each block is loaded into the QueryDefinitionsManager.
-     * 
-     * @param prefix - is the package prefix where the sqld files are located.
-     * 
-     * @param extension - is the file extension
-     */
-//    public static void loadBlockFiles(final String prefix, final String extension) {
-//        final Predicate<String> filter = new FilterBuilder().include(prefix + ".*\\." + extension);
-//        final Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter)
-//                .setScanners(new ResourcesScanner()).setUrls(ClasspathHelper.forClassLoader()));
-//        final Set<String> resources = reflections.getResources(Pattern.compile(".*\\." + extension));
-//        for (final String resource : resources) {
-//            try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
-//                LOGGER.debug("Loading SQL file {} ", resource);
-//                QueryDefinitionsStaticHolder.loadTextBlockFile(stream, resource);
-//            } catch (final IOException e) {
-//                LOGGER.error("Error Loading SQL file {} ", resource, e);
-//            }
-//        }
-//    }
-
-    /**
-     * Loads text block files with the specified extension. Each block is loaded into the QueryDefinitionsManager.
-     * 
-     * @param prefix - is the package prefix where the sqld files are located.
-     * 
-     * @param extension - is the file extension
-     */
-    public static void loadBlockFiles(final String prefix, final String extension,
-            QueryDefinitionRepository repostory) {
-        final Predicate<String> filter = new FilterBuilder().include(prefix + ".*\\." + extension);
         final Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter)
                 .setScanners(new ResourcesScanner()).setUrls(ClasspathHelper.forClassLoader()));
-        final Set<String> resources = reflections.getResources(Pattern.compile(".*\\." + extension));
-        for (final String resource : resources) {
+
+        final Set<String> textResources = reflections.getResources(Pattern.compile(".*\\." + SQLD_TEXT_EXTENSION));
+        for (final String resource : textResources) {
             try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
                 LOGGER.debug("Loading SQL file {} ", resource);
-                loadTextBlockFile(stream, resource, repostory);
+                loadTextBlockFile(stream, resource, repository);
             } catch (final IOException e) {
                 LOGGER.error("Error Loading SQL file {} ", resource, e);
             }
         }
+
+        final Set<String> yamlResources = reflections.getResources(Pattern.compile(".*\\." + SQLD_YAML_EXTENSION));
+        for (final String resource : yamlResources) {
+            try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
+                LOGGER.debug("Loading SQL Yaml file {} ", resource);
+                loadYamlFile(stream, resource, repository);
+            } catch (final IOException e) {
+                LOGGER.error("Error Loading SQL Yaml file {} ", resource, e);
+            }
+        }
+
     }
 
     private static synchronized void loadTextBlockFile(final InputStream aInput, final String aSqlFileName,
@@ -108,36 +86,6 @@ public final class QueryDefinitionClassPathLoader {
         repository.fileLoaded(aSqlFileName);
     }
 
-//    public static void loadYamlFiles(final String prefix, final String extension) {
-//        final Predicate<String> filter = new FilterBuilder().include(prefix + ".*\\." + extension);
-//        final Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter)
-//                .setScanners(new ResourcesScanner()).setUrls(ClasspathHelper.forClassLoader()));
-//        final Set<String> resources = reflections.getResources(Pattern.compile(".*\\." + extension));
-//        for (final String resource : resources) {
-//            try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
-//                LOGGER.debug("Loading SQL Yaml file {} ", resource);
-//                QueryDefinitionsStaticHolder.loadYamlFile(stream, resource);
-//            } catch (final IOException e) {
-//                LOGGER.error("Error Loading SQL Yaml file {} ", resource, e);
-//            }
-//        }
-//    }
-
-    public static void loadYamlFiles(final String prefix, final String extension,
-            QueryDefinitionRepository repository) {
-        final Predicate<String> filter = new FilterBuilder().include(prefix + ".*\\." + extension);
-        final Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter)
-                .setScanners(new ResourcesScanner()).setUrls(ClasspathHelper.forClassLoader()));
-        final Set<String> resources = reflections.getResources(Pattern.compile(".*\\." + extension));
-        for (final String resource : resources) {
-            try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
-                LOGGER.debug("Loading SQL Yaml file {} ", resource);
-                loadYamlFile(stream, resource, repository);
-            } catch (final IOException e) {
-                LOGGER.error("Error Loading SQL Yaml file {} ", resource, e);
-            }
-        }
-    }
 
     public static void loadYamlFile(final InputStream aInput, final String aSqlFileName,
             QueryDefinitionRepository repository) throws IOException {
