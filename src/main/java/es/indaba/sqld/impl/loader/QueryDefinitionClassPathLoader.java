@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
 
-import es.indaba.sqld.QueryDefinitionsStaticHolder;
 import es.indaba.sqld.api.QueryDefinitionRepository;
 import es.indaba.sqld.impl.parser.TextBlockReader;
 import es.indaba.sqld.impl.parser.YamlFileReader;

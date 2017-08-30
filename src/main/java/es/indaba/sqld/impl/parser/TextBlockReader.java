@@ -206,7 +206,7 @@ public final class TextBlockReader {
         /*
          * Implementation Note: Patterns are thread-safe, while Matchers are not. Thus, a Pattern may be compiled by a
          * class once upon startup, then reused safely in a multi-threaded environment.
-         */        
+         */
         final Matcher matcher = aPattern.matcher(aText);
         return matcher.matches();
     }
