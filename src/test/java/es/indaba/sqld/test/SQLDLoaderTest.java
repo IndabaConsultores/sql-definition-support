@@ -16,7 +16,6 @@ import org.junit.Test;
 
 import es.indaba.sqld.QueryDefinitionsStaticHolder;
 import es.indaba.sqld.api.QueryDefinition;
-import es.indaba.sqld.impl.QueryDefinitionStaticImpl;
 
 public class SQLDLoaderTest {
 
@@ -24,21 +23,21 @@ public class SQLDLoaderTest {
     public void testSqldLoad() {
         QueryDefinitionsStaticHolder.loadQueryDefinitions("es.indaba.sqld.test.loader.test.package1");
         // Check loader
-        QueryDefinition query1 = new QueryDefinitionStaticImpl("QUERY1");
+        QueryDefinition query1 = QueryDefinitionsStaticHolder.getQueryDefinition("QUERY1");
         assertEquals("QUERY1_CONTENT", query1.getQueryAsString());
-        QueryDefinition query2 = new QueryDefinitionStaticImpl("QUERY2");
+        QueryDefinition query2 = QueryDefinitionsStaticHolder.getQueryDefinition("QUERY2");
         assertEquals("QUERY2_CONTENT", query2.getQueryAsString());
 
-        QueryDefinition querySubs = new QueryDefinitionStaticImpl("QUERY_SUBSTITUTION");
+        QueryDefinition querySubs = QueryDefinitionsStaticHolder.getQueryDefinition("QUERY_SUBSTITUTION");
         assertEquals("QUERY_SUBSTITUTION {0},{1},{2}", querySubs.getQueryAsString());
         assertEquals(querySubs.getQueryAsString(), querySubs.toString());
         assertEquals("QUERY_SUBSTITUTION a,''b'',3", querySubs.getQueryAsString("a", "'b'", 3));
 
-        QueryDefinition queryYaml = new QueryDefinitionStaticImpl("QUERY_YAML");
+        QueryDefinition queryYaml = QueryDefinitionsStaticHolder.getQueryDefinition("QUERY_YAML");
         assertEquals("QUERY_YAML_CONTENT\n", queryYaml.getQueryAsString());
 
         // Check not loaded
-        QueryDefinition query3 = new QueryDefinitionStaticImpl("QUERY3");
+        QueryDefinition query3 = QueryDefinitionsStaticHolder.getQueryDefinition("QUERY3");
         boolean thrown = false;
         try {
             query3.getQueryAsString();
@@ -49,10 +48,10 @@ public class SQLDLoaderTest {
 
         // Loads upper prefix
         QueryDefinitionsStaticHolder.loadQueryDefinitions("es.indaba.sqld.test.loader.test");
-        query3 = new QueryDefinitionStaticImpl("QUERY3");
+        query3 = QueryDefinitionsStaticHolder.getQueryDefinition("QUERY3");
         assertEquals("QUERY3_CONTENT", query3.getQueryAsString());
         // template not loaded
-        QueryDefinition template1 = new QueryDefinitionStaticImpl("TEMPLATE1");
+        QueryDefinition template1 = QueryDefinitionsStaticHolder.getQueryDefinition("TEMPLATE1");
         thrown = false;
         try {
             template1.getQueryAsString();
@@ -62,7 +61,7 @@ public class SQLDLoaderTest {
 
         QueryDefinitionsStaticHolder.clear();
 
-        query3 = new QueryDefinitionStaticImpl("QUERY3");
+        query3 = QueryDefinitionsStaticHolder.getQueryDefinition("QUERY3");
         thrown = false;
         try {
             query3.getQueryAsString();
@@ -72,39 +71,6 @@ public class SQLDLoaderTest {
         assertTrue(thrown);
     }
 
-    // @Test
-    // public void testExtension() {
-    // QueryDefinitionsStaticHolder.loadQueryDefinitions("es.indaba.sqld.test.loader.test", "template");
-    // QueryDefinition query3 = new QueryDefinition("QUERY3");
-    // boolean thrown = false;
-    // try {
-    // query3.getQueryAsString();
-    // } catch (IllegalArgumentException e) {
-    // thrown = true;
-    // }
-    // assertTrue(thrown);
-    // QueryDefinition template1 = new QueryDefinition("TEMPLATE1");
-    // assertEquals("TEMPLATE1_CONTENT", template1.getQueryAsString());
-    //
-    // QueryDefinitionsStaticHolder.clear();
-    // }
-    //
-    // @Test
-    // public void testLazyLoad() {
-    // QueryDefinition template1 = new QueryDefinition("TEMPLATE1");
-    // boolean thrown = false;
-    // try {
-    // template1.getQueryAsString();
-    // } catch (IllegalArgumentException e) {
-    // thrown = true;
-    // }
-    // assertTrue(thrown);
-    // QueryDefinitionsStaticHolder.loadQueryDefinitions("es.indaba.sqld.test.loader.test", "template");
-    // assertEquals("TEMPLATE1_CONTENT", template1.getQueryAsString());
-    //
-    // QueryDefinitionsStaticHolder.clear();
-    //
-    // }
 
     @Test(expected = IllegalArgumentException.class)
     public void testDuplicatedKey() {

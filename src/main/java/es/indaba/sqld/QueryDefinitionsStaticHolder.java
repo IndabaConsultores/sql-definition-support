@@ -12,7 +12,9 @@ package es.indaba.sqld;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.indaba.sqld.api.QueryDefinition;
 import es.indaba.sqld.api.QueryDefinitionRepository;
+import es.indaba.sqld.impl.QueryDefinitionStaticImpl;
 import es.indaba.sqld.impl.loader.QueryDefinitionClassPathLoader;
 
 public final class QueryDefinitionsStaticHolder {
@@ -38,6 +40,17 @@ public final class QueryDefinitionsStaticHolder {
             throw new IllegalArgumentException("The query '" + queryName + "' is not present");
         }
         return QUERY_REPOSITORY.getQuery(queryName);
+    }
+
+    /**
+     * Get the QueryDefinition object for the query
+     * 
+     * @param queryName - The query key
+     * @return - A QueryDefinition object
+     */
+    public static QueryDefinition getQueryDefinition(final String queryName) {
+        assert queryName != null;
+        return new QueryDefinitionStaticImpl(queryName);
     }
 
     /**

@@ -9,12 +9,6 @@
  *******************************************************************************/
 package es.indaba.sqld.impl;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,12 +20,10 @@ import es.indaba.sqld.api.QueryDefinition;
  * This is a Query Definition Proxy. It retrieves the SQL query from the queries store.
  *
  */
-public class QueryDefinitionStaticImpl implements QueryDefinition {
+public class QueryDefinitionStaticImpl extends QueryDefinition {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueryDefinitionStaticImpl.class);
 
-    private String query;
-    private String key;
 
     /**
      * Constructs a proxy for the provided query key
@@ -39,7 +31,7 @@ public class QueryDefinitionStaticImpl implements QueryDefinition {
      * @param key
      */
     public QueryDefinitionStaticImpl(String key) {
-        this.key = key;
+        super(key);
         try {
             this.query = QueryDefinitionsStaticHolder.getQueryAsString(key);
         } catch (IllegalArgumentException e) {
@@ -50,37 +42,17 @@ public class QueryDefinitionStaticImpl implements QueryDefinition {
         }
     }
 
-
     /**
      * Returns the query as a String
      * 
      * @return the query proxied by this object
      */
+    @Override
     public String getQueryAsString() {
         if (query != null) {
             return query;
         }
         query = QueryDefinitionsStaticHolder.getQueryAsString(key);
         return query;
-    }
-
-    /**
-     * Returns the query as an interpolated String with the provided parameters
-     * 
-     * @param parameters parameters to be interpolated into the query
-     * @return the query interpolated with the parameters
-     */
-    public String getQueryAsString(Object... parameters) {
-        final List<Object> parameterList = Arrays.asList(parameters);
-        final List<Object> escapedParameterList =
-                parameterList.stream().map(x -> x instanceof String ? StringUtils.replace((String) x, "'", "''") : x)
-                        .collect(Collectors.toList());
-
-        return MessageFormat.format(getQueryAsString(), escapedParameterList.toArray());
-    }
-
-    @Override
-    public String toString() {
-        return getQueryAsString();
     }
 }

@@ -1,0 +1,22 @@
+Query1: |
+ QUERY1_CONTENT
+query1: |
+ QUERY1_CONTENT
+query2: |
+ QUERY2_CONTENT
+query5: |
+ Select * 
+ from table
+ where a=1
+ and b=?
+
+query6: |
+ Select * 
+ from table2
+ where a=1
+ # dd
+ and b=?
+ #ss
+ #ss
+ 
+ 1que rry: |

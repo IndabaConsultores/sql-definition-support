@@ -9,18 +9,47 @@
  *******************************************************************************/
 package es.indaba.sqld.api;
 
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang.StringUtils;
+
 /**
  * This is a Query Definition Proxy. It retrieves the SQL query from the queries store.
  *
  */
-public interface QueryDefinition {
+public class QueryDefinition {
+
+    protected String query;
+    protected final String key;
+
+    
+    public QueryDefinition(String key) {
+        this.key = key;
+    }
+    
+    /**
+     * Constructs a proxy for the provided query key
+     * 
+     * @param key - Key of the query definition
+     * @param query - Select string
+     */
+    public QueryDefinition(String key, String query) {
+        this.key = key;
+        this.query = query;
+    }
+
 
     /**
      * Returns the query as a String
      * 
      * @return the query proxied by this object
      */
-    public String getQueryAsString();
+    public String getQueryAsString() {
+        return query;
+    }
 
     /**
      * Returns the query as an interpolated String with the provided parameters
@@ -28,7 +57,24 @@ public interface QueryDefinition {
      * @param parameters parameters to be interpolated into the query
      * @return the query interpolated with the parameters
      */
-    public String getQueryAsString(Object... parameters);
+    public String getQueryAsString(Object... parameters) {
+        final List<Object> parameterList = Arrays.asList(parameters);
+        final List<Object> escapedParameterList =
+                parameterList.stream().map(x -> x instanceof String ? StringUtils.replace((String) x, "'", "''") : x)
+                        .collect(Collectors.toList());
+
+        return MessageFormat.format(query, escapedParameterList.toArray());
+    }
+
+    @Override
+    public String toString() {
+        return getQueryAsString();
+    }
+
+
+    public String getKey() {
+        return key;
+    }
 
 
 }

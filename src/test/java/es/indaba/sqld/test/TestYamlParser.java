@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import es.indaba.sqld.impl.parser.YamlFileReader;
@@ -26,23 +27,40 @@ public class TestYamlParser {
         assertEquals("QUERY2_CONTENT\n", query2);
     }
 
-/*
     @Test
     public void testCaseSensitiveKeys() throws Exception {
-        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/parser/test.sqld");
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/yaml/test.ysqld");
 
-        TextBlockReader sqlReader = new TextBlockReader(stream, "es/indaba/sqld/test/parser/test.sqld");
+        YamlFileReader sqlReader = new YamlFileReader(stream, "es/indaba/sqld/test/yaml/test.ysqld");
         Properties blocks = sqlReader.read();
-        assertNotNull(blocks);
 
         String query1 = blocks.getProperty("query1");
-        assertNull(query1);
+        assertEquals("QUERY1_CONTENT\n", query1);
 
         query1 = blocks.getProperty("QUERY1");
-        assertEquals("QUERY1_CONTENT", query1);
+        Assert.assertNull(query1);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testDuplicatedKey() throws Exception {
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/yaml/test2.ysqld");
 
+        YamlFileReader sqlReader = new YamlFileReader(stream, "es/indaba/sqld/test/yaml/test2.ysqld");
+        sqlReader.read();
+    }
+
+    @Test
+    public void testEmptyFile() throws Exception {
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/yaml/empty.ysqld");
+
+        YamlFileReader sqlReader = new YamlFileReader(stream, "es/indaba/sqld/test/yaml/empty.ysqld");
+        sqlReader.read();
+        Properties blocks = sqlReader.read();
+        assertEquals(0, blocks.size());
+    }
+
+    
+/*
     @Test(expected = IllegalArgumentException.class)
     public void testKeyStartsWithNumber() throws Exception {
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/parser/test-illegal-key.sqld");
@@ -51,15 +69,7 @@ public class TestYamlParser {
         sqlReader.read();
     }
 
-    @Test
-    public void testEmptyFile() throws Exception {
-        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/parser/test-empty.sqld");
-
-        TextBlockReader sqlReader = new TextBlockReader(stream, "es/indaba/sqld/test/parser/test-empty.sqld");
-        Properties blocks = sqlReader.read();
-        assertEquals(0, blocks.size());
-    }
-
+   
     @Test
     public void testEmptyBlock() throws Exception {
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/parser/test-empty-block.sqld");
@@ -71,13 +81,7 @@ public class TestYamlParser {
         org.junit.Assert.assertEquals("", content);
     }
     
-    @Test(expected = IllegalArgumentException.class)
-    public void testDuplicatedKey() throws Exception {
-        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/parser/test-duplicated-key.sqld");
-
-        TextBlockReader sqlReader = new TextBlockReader(stream, "es/indaba/sqld/test/parser/test-duplicated-key.sqld");
-        sqlReader.read();
-    }
+   
     
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalBlock() throws Exception {

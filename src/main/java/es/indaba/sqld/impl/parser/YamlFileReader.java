@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -36,12 +37,17 @@ public class YamlFileReader {
         final Yaml yaml = new Yaml(options);
         try {
             final Map<String, String> result = (Map<String, String>) yaml.load(fReader);
-            for (final String key : result.keySet()) {
+            if (result == null) {
+                return properties;
+            }
+            
+            for (final Entry<String, String> entry : result.entrySet()) {
+                String key = entry.getKey();
                 if (properties.containsKey(key.toLowerCase())) {
                     LOGGER.error("DUPLICATE Value found - 'Duplicate key {}' in {}", key, fConfigFileName);
                     throw new IllegalArgumentException("DUPLICATE Value found for this key '" + key + "'");
                 }
-                properties.setProperty(key.toLowerCase(), result.get(key));
+                properties.setProperty(key.toLowerCase(), entry.getValue());
             }
         } catch (IllegalStateException e) {
             String message = e.getMessage();
