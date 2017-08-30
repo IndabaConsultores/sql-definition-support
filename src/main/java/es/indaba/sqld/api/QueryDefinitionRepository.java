@@ -18,7 +18,7 @@ public class QueryDefinitionRepository {
 
     private Properties queries = new Properties();
     private Set<String> files = new HashSet<>();
-    private Map<String, String> queries_file = new HashMap<>();
+    private Map<String, String> queriesFile = new HashMap<>();
 
     public void fileLoaded(final String file) {
         files.add(file);
@@ -34,14 +34,14 @@ public class QueryDefinitionRepository {
             final String key = (String) keys.nextElement();
             final String value = aProperties.getProperty(key);
             if (queries.containsKey(key)) {
-                String duplicateKeyFile = queries_file.get(key);
+                String duplicateKeyFile = queriesFile.get(key);
                 LOGGER.error("The query '{}' is duplicated. The key is present in files {} and {} ", key, aSqlFileName,
                         duplicateKeyFile);
                 throw new IllegalArgumentException(
                         "The query '" + key + "' is duplicated in files " + aSqlFileName + " and " + duplicateKeyFile);
             }
             queries.setProperty(key, value);
-            queries_file.put(key, aSqlFileName);
+            queriesFile.put(key, aSqlFileName);
         }
     }
 
@@ -58,7 +58,7 @@ public class QueryDefinitionRepository {
     public void clear() {
         queries.clear();
         files.clear();
-        queries_file.clear();
+        queriesFile.clear();
     }
 
 }
