@@ -87,7 +87,7 @@ public final class QueryDefinitionClassPathLoader {
     }
 
 
-    public static void loadYamlFile(final InputStream aInput, final String aSqlFileName,
+    private static void loadYamlFile(final InputStream aInput, final String aSqlFileName,
             QueryDefinitionRepository repository) throws IOException {
         if (repository.isFileProcessed(aSqlFileName)) {
             LOGGER.debug("The file '{}' is already loaded.", aSqlFileName);
