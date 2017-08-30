@@ -35,6 +35,7 @@ public final class QueryDefinitionClassPathLoader {
 
     private static final String SQLD_TEXT_EXTENSION = "sqld";
     private static final String SQLD_YAML_EXTENSION = "ysqld";
+    private static final String ANY_LEVEL_REGEXP = ".*\\.";
 
     /**
      * Loads query definition files with sqld and ysqld extension. Each block is loaded into the provided
@@ -45,13 +46,14 @@ public final class QueryDefinitionClassPathLoader {
      * @param repository - is the repository where the definitions are loaded.
      */
     public static void loadQueryDefinitionFiles(final String prefix, QueryDefinitionRepository repository) {
-        final Predicate<String> filter = new FilterBuilder().include(prefix + ".*\\." + SQLD_TEXT_EXTENSION)
-                .include(prefix + ".*\\." + SQLD_YAML_EXTENSION);
+        final Predicate<String> filter = new FilterBuilder().include(prefix + ANY_LEVEL_REGEXP + SQLD_TEXT_EXTENSION)
+                .include(prefix + ANY_LEVEL_REGEXP + SQLD_YAML_EXTENSION);
 
         final Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter)
                 .setScanners(new ResourcesScanner()).setUrls(ClasspathHelper.forClassLoader()));
 
-        final Set<String> textResources = reflections.getResources(Pattern.compile(".*\\." + SQLD_TEXT_EXTENSION));
+        final Set<String> textResources =
+                reflections.getResources(Pattern.compile(ANY_LEVEL_REGEXP + SQLD_TEXT_EXTENSION));
         for (final String resource : textResources) {
             try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
                 LOGGER.debug("Loading SQL file {} ", resource);
@@ -61,7 +63,8 @@ public final class QueryDefinitionClassPathLoader {
             }
         }
 
-        final Set<String> yamlResources = reflections.getResources(Pattern.compile(".*\\." + SQLD_YAML_EXTENSION));
+        final Set<String> yamlResources =
+                reflections.getResources(Pattern.compile(ANY_LEVEL_REGEXP + SQLD_YAML_EXTENSION));
         for (final String resource : yamlResources) {
             try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
                 LOGGER.debug("Loading SQL Yaml file {} ", resource);
@@ -87,7 +90,7 @@ public final class QueryDefinitionClassPathLoader {
 
 
     private static void loadYamlFile(final InputStream aInput, final String aSqlFileName,
-            QueryDefinitionRepository repository) throws IOException {
+            QueryDefinitionRepository repository) {
         if (repository.isFileProcessed(aSqlFileName)) {
             LOGGER.debug("The file '{}' is already loaded.", aSqlFileName);
             return;
