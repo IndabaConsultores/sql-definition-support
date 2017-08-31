@@ -49,6 +49,15 @@ public class TestYamlParser {
         sqlReader.read();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testDuplicatedKey2() throws Exception {
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/yaml/duplicate.ysqld");
+
+        YamlFileReader sqlReader = new YamlFileReader(stream, "es/indaba/sqld/test/yaml/duplicate.ysqld");
+        sqlReader.read();
+    }
+
+    
     @Test
     public void testEmptyFile() throws Exception {
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/yaml/empty.ysqld");
