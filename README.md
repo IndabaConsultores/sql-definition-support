@@ -1,6 +1,6 @@
 
 
-[![Travis-CI](https://travis-ci.org/IndabaConsultores/sql-definition-support.svg?branch=master)](https://travis-ci.org/IndabaConsultores/sql-definition-support) [![Sonarcloud](https://sonarcloud.io/api/badges/gate?key=es.indaba:sql-definition-support)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definition-support) [![SonarCloud Technical Debt](https://sonarcloud.io/api/badges/measure?key=es.indaba:sql-definition-support&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definition-support) [![SonarCloud Coverage](https://sonarcloud.io/api/badges/measure?key=es.indaba:sql-definition-support&metric=coverage)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definition-support)
+[![Travis-CI](https://travis-ci.org/IndabaConsultores/sql-definition-support.svg?branch=master)](https://travis-ci.org/IndabaConsultores/sql-definition-support) [![Sonarcloud](https://sonarcloud.io/api/project_badges/measure?project=es.indaba:sql-definition-support&metric=alert_status)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definition-support) [![SonarCloud Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=es.indaba:sql-definition-support&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definition-support) [![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=es.indaba:sql-definition-support&metric=coverage)](https://sonarcloud.io/dashboard?id=es.indaba:sql-definition-support)
 
 SQL Definition Support (LGPL)
 =============
