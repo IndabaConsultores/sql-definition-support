@@ -18,7 +18,7 @@ Include Maven dependency on your pom.xml
 <dependency>
 	<groupId>es.indaba</groupId>
 	<artifactId>sql-definition-support</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 </dependency>
 ```
 
