@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
 import es.indaba.sqld.impl.parser.YamlFileReader;
 
@@ -49,7 +50,7 @@ public class TestYamlParser {
         sqlReader.read();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = DuplicateKeyException.class)
     public void testDuplicatedKey2() throws Exception {
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("es/indaba/sqld/test/yaml/duplicate.ysqld");
 
